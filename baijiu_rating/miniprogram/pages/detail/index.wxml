@@ -1,0 +1,51 @@
+<view class="page safe-bottom">
+  <view wx:if="{{liquor}}" class="card">
+    <view class="row-between">
+      <view>
+        <text class="title">{{liquor.name}}</text>
+        <text class="subtitle">{{liquor.brand}} | {{liquor.price_min}}-{{liquor.price_max}}</text>
+      </view>
+      <text class="link" bindtap="toggleFavorite">{{is_favorite ? i18n.unfavorite : i18n.favorite}}</text>
+    </view>
+
+    <view class="chips">
+      <text class="chip chip--active">{{i18n.aroma}} {{liquor.aroma_std || i18n.unknownAroma}}</text>
+      <text class="chip" wx:if="{{liquor.aroma_raw_top_text}}">{{i18n.rawAroma}} {{liquor.aroma_raw_top_text}}</text>
+      <text class="chip">{{i18n.totalRatings}} {{stats.total_ratings || 0}}</text>
+    </view>
+
+    <button class="btn-primary" bindtap="goRate">{{i18n.goRate}}</button>
+    <view class="row-between action-links">
+      <text class="link" bindtap="copyRecommendation">{{i18n.copyText}}</text>
+      <button class="mini-share" open-type="share">{{i18n.share}}</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.sceneScores}}</text>
+    <view wx:if="{{!visibleSceneScores.length}}" class="empty">{{i18n.noSceneScore}}</view>
+    <view wx:for="{{visibleSceneScores}}" wx:key="scene" class="list-row row-between">
+      <text class="list-title">{{item.scene_label}} ({{item.v}})</text>
+      <text class="score">{{item.bayes_score_scene}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.dimensionAvg}}</text>
+    <view wx:for="{{dimensionCards}}" wx:key="scene" class="dim-row">
+      <text class="list-title">{{item.scene_label}}</text>
+      <view wx:for="{{item.rows}}" wx:key="key">
+        <text class="list-subtitle">{{item.label}}: {{item.value}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.latestReviews}}</text>
+    <view wx:if="{{!latest_reviews.length}}" class="empty">{{i18n.noComment}}</view>
+    <view wx:for="{{latest_reviews}}" wx:key="created_at" class="list-row">
+      <text class="list-subtitle">{{item.scene_label}} | {{item.score_overall}} | {{item.created_at_text}}</text>
+      <text class="list-title">{{item.review_text || i18n.noShortReview}}</text>
+    </view>
+  </view>
+</view>

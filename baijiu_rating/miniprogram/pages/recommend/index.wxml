@@ -1,0 +1,24 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">{{i18n.title}}</text>
+    <text class="subtitle">{{i18n.scene}}: {{sceneLabel}} | {{i18n.budget}}: {{priceLabel}} | {{i18n.crowd}}: {{crowdLabel}} | {{i18n.prefs}}: {{prefsText}}</text>
+    <button class="btn-primary" open-type="share">{{i18n.share}}</button>
+  </view>
+
+  <view wx:if="{{loading}}" class="card empty">{{i18n.loading}}</view>
+  <view wx:elif="{{!list.length}}" class="card empty">{{i18n.empty}}</view>
+
+  <view wx:for="{{list}}" wx:key="id" class="card" data-id="{{item.id}}" bindtap="toDetail">
+    <view class="row-between">
+      <view>
+        <text class="list-title">{{item.name}}</text>
+        <text class="list-subtitle">{{item.brand}} | {{item.price_min}}-{{item.price_max}}</text>
+      </view>
+      <text class="score">{{item.final_score}}</text>
+    </view>
+
+    <view class="reason-wrap">
+      <text wx:for="{{item.reasons}}" wx:key="*this" class="reason-item">- {{item}}</text>
+    </view>
+  </view>
+</view>

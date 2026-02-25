@@ -1,0 +1,26 @@
+﻿{
+  "name": "baijiu-rating-server",
+  "version": "1.0.0",
+  "description": "Baijiu rating MVP backend (Express + SQLite)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "start": "node index.js",
+    "init-db": "node scripts/initDb.js",
+    "test": "node tests/scoreService.test.js"
+  },
+  "keywords": [
+    "baijiu",
+    "express",
+    "sqlite",
+    "wechat-miniprogram"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

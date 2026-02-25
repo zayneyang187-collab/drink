@@ -1,0 +1,6 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">{{i18n.title}}</text>
+    <text class="subtitle">{{i18n.subtitle}}</text>
+  </view>
+</view>

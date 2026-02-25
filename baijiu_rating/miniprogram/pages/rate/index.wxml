@@ -1,0 +1,66 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">{{i18n.titlePrefix}}{{liquor_name || i18n.thisLiquor}}</text>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.sceneRequired}}</text>
+      <picker mode="selector" range="{{sceneOptions}}" range-key="label" value="{{sceneIndex}}" bindchange="onSceneChange">
+        <view class="picker">{{sceneLabel}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.overall}}: {{score_overall}}</text>
+      <slider min="1" max="10" step="1" value="{{score_overall}}" data-key="score_overall" bindchange="onSliderChange" />
+    </view>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.smooth}}: {{score_smooth}}</text>
+      <slider min="1" max="10" step="1" value="{{score_smooth}}" data-key="score_smooth" bindchange="onSliderChange" />
+    </view>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.softness}}: {{score_softness}}</text>
+      <slider min="1" max="10" step="1" value="{{score_softness}}" data-key="score_softness" bindchange="onSliderChange" />
+    </view>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.value}}: {{score_value}}</text>
+      <slider min="1" max="10" step="1" value="{{score_value}}" data-key="score_value" bindchange="onSliderChange" />
+    </view>
+
+    <view class="field" wx:if="{{scene==='gift'}}">
+      <text class="subtitle">{{i18n.giftFace}}: {{score_gift_face}}</text>
+      <slider min="1" max="10" step="1" value="{{score_gift_face}}" data-key="score_gift_face" bindchange="onSliderChange" />
+    </view>
+
+    <view class="field">
+      <view class="row-between">
+        <text class="subtitle">{{i18n.aromaLikeOptional}}</text>
+        <switch checked="{{enableAromaLike}}" bindchange="onSwitchAromaLike" />
+      </view>
+      <slider wx:if="{{enableAromaLike}}" min="1" max="10" step="1" value="{{score_aroma_like}}" data-key="score_aroma_like" bindchange="onSliderChange" />
+    </view>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.reviewOptional}}</text>
+      <textarea class="textarea" value="{{review_text}}" bindinput="onReviewInput" maxlength="200" placeholder="{{i18n.reviewPlaceholder}}" />
+    </view>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.aromaRawOptional}}</text>
+      <input class="input" value="{{aroma_raw}}" bindinput="onAromaRawInput" placeholder="{{i18n.aromaRawPlaceholder}}" />
+    </view>
+
+    <view class="field">
+      <text class="subtitle">{{i18n.imagesOptional}}</text>
+      <button class="link-btn" bindtap="chooseImages">{{i18n.pickImages}}</button>
+      <view wx:for="{{images}}" wx:key="*this" class="img-row row-between">
+        <text class="list-subtitle">{{item}}</text>
+        <text class="link" data-index="{{index}}" bindtap="removeImage">{{i18n.remove}}</text>
+      </view>
+    </view>
+
+    <button class="btn-primary" bindtap="submit" loading="{{submitting}}">{{i18n.submit}}</button>
+  </view>
+</view>

@@ -1,0 +1,32 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <view class="row-between">
+      <text class="title">{{i18n.title}}</text>
+      <text class="link" bindtap="goSearch">{{i18n.search}}</text>
+    </view>
+
+    <view class="segment rank-segment">
+      <view
+        wx:for="{{sceneOptions}}"
+        wx:key="value"
+        class="segment__item {{scene===item.value ? 'segment__item--active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="switchScene"
+      >
+        {{item.label}}
+      </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="empty">{{i18n.loading}}</view>
+    <view wx:elif="{{!list.length}}" class="empty">{{i18n.empty}}</view>
+
+    <view wx:for="{{list}}" wx:key="id" class="list-row row" data-id="{{item.id}}" bindtap="toDetail">
+      <text class="list-rank">{{index + 1}}</text>
+      <view class="list-main">
+        <text class="list-title">{{item.name}}</text>
+        <text class="list-subtitle">{{item.brand}} | {{item.price_min}}-{{item.price_max}}</text>
+      </view>
+      <text class="score">{{item.final_score}}</text>
+    </view>
+  </view>
+</view>

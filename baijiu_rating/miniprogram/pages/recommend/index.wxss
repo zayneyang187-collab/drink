@@ -1,0 +1,10 @@
+.reason-wrap {
+  margin-top: 10rpx;
+}
+
+.reason-item {
+  display: block;
+  margin-bottom: 6rpx;
+  color: #1C1C1E;
+  font-size: 24rpx;
+}

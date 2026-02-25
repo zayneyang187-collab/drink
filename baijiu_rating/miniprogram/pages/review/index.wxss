@@ -1,0 +1,52 @@
+.search-row {
+  margin-top: 14rpx;
+}
+
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  border-radius: 12rpx;
+  padding: 0 18rpx;
+  box-sizing: border-box;
+  background: #EFEFF4;
+  color: #1C1C1E;
+  font-size: 24rpx;
+}
+
+.search-btn {
+  margin-left: 10rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 12rpx;
+  border: none;
+  background: #FF9F0A;
+  color: #FFFFFF;
+  padding: 0 24rpx;
+}
+
+.search-btn::after {
+  border: none;
+}
+
+.action-card {
+  margin-bottom: 0;
+}
+
+.selected-box {
+  margin-top: 12rpx;
+  padding: 16rpx;
+  border-radius: 12rpx;
+  background: #F8F8FA;
+}
+
+.selected-empty {
+  margin-top: 12rpx;
+  padding: 14rpx;
+  background: #F8F8FA;
+  border-radius: 12rpx;
+}
+
+.scene-label {
+  display: block;
+  margin-top: 16rpx;
+}

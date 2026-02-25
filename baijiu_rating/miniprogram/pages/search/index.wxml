@@ -1,0 +1,27 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <view class="row">
+      <input
+        class="search-input"
+        value="{{keyword}}"
+        placeholder="{{i18n.placeholder}}"
+        bindinput="onInput"
+        bindconfirm="onConfirm"
+        confirm-type="search"
+      />
+      <button size="mini" class="search-btn" bindtap="search">{{i18n.search}}</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card empty">{{i18n.searching}}</view>
+  <view wx:elif="{{!list.length}}" class="card empty">{{i18n.empty}}</view>
+
+  <view wx:for="{{list}}" wx:key="id" class="card">
+    <text class="list-title">{{item.name}}</text>
+    <text class="list-subtitle">{{item.brand}} | {{item.price_min}}-{{item.price_max}}</text>
+    <view class="row actions">
+      <text class="link" data-id="{{item.id}}" bindtap="toDetail">{{i18n.detail}}</text>
+      <text class="link action-right" data-id="{{item.id}}" bindtap="toRate">{{i18n.rate}}</text>
+    </view>
+  </view>
+</view>

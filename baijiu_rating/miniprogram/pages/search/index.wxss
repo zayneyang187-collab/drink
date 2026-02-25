@@ -1,0 +1,32 @@
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  border-radius: 12rpx;
+  padding: 0 18rpx;
+  box-sizing: border-box;
+  background: #EFEFF4;
+  font-size: 24rpx;
+}
+
+.search-btn {
+  margin-left: 10rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border: none;
+  border-radius: 12rpx;
+  background: #FF9F0A;
+  color: #FFFFFF;
+  padding: 0 24rpx;
+}
+
+.search-btn::after {
+  border: none;
+}
+
+.actions {
+  margin-top: 10rpx;
+}
+
+.action-right {
+  margin-left: 24rpx;
+}

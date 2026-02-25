@@ -1,0 +1,60 @@
+.filters {
+  margin-bottom: 12rpx;
+}
+
+.item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.item-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #111827;
+  display: block;
+}
+
+.item-sub {
+  font-size: 24rpx;
+  color: #6b7280;
+  margin-top: 6rpx;
+  display: block;
+}
+
+.score-wrap {
+  text-align: right;
+}
+
+.score {
+  display: block;
+  font-size: 40rpx;
+  color: #c2410c;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-sub {
+  margin-top: 4rpx;
+  font-size: 20rpx;
+  color: #9ca3af;
+  display: block;
+}
+
+.reason-wrap {
+  margin-top: 12rpx;
+}
+
+.reason {
+  display: block;
+  color: #374151;
+  font-size: 24rpx;
+  margin-bottom: 6rpx;
+}
+
+.go-detail {
+  margin-top: 14rpx;
+  color: #ea580c;
+  font-size: 24rpx;
+  font-weight: 600;
+}

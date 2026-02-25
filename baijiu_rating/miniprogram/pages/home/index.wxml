@@ -1,0 +1,119 @@
+<view class="page safe-bottom">
+  <view class="ios-nav row-between">
+    <text class="ios-title">{{i18n.navTitle}}</text>
+    <text class="link" bindtap="goSearch">{{i18n.navSearch}}</text>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.quickTitle}}</text>
+
+    <view class="field">
+      <text class="field-label">{{i18n.scene}}</text>
+      <view class="chips">
+        <view
+          wx:for="{{sceneOptions}}"
+          wx:key="value"
+          class="chip {{scene===item.value ? 'chip--active' : ''}}"
+          data-value="{{item.value}}"
+          bindtap="selectScene"
+        >
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field-label">{{i18n.budget}}</text>
+      <view class="chips">
+        <view
+          wx:for="{{priceOptions}}"
+          wx:key="value"
+          class="chip {{price_bucket===item.value ? 'chip--active' : ''}}"
+          data-value="{{item.value}}"
+          bindtap="selectPrice"
+        >
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+
+    <view class="more-toggle row-between" bindtap="toggleMore">
+      <text class="field-label">{{i18n.moreOptions}}</text>
+      <text class="link">{{showMore ? i18n.collapse : i18n.expand}}</text>
+    </view>
+
+    <view wx:if="{{showMore}}">
+      <view class="field">
+        <text class="field-label">{{i18n.crowd}}</text>
+        <view class="chips">
+          <view
+            wx:for="{{crowdOptions}}"
+            wx:key="value"
+            class="chip {{crowd===item.value ? 'chip--active' : ''}}"
+            data-value="{{item.value}}"
+            bindtap="selectCrowd"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{i18n.prefs}}</text>
+        <view class="chips">
+          <view
+            wx:for="{{prefOptions}}"
+            wx:key="value"
+            class="chip {{prefs.indexOf(item.value)>=0 ? 'chip--active' : ''}}"
+            data-value="{{item.value}}"
+            bindtap="togglePref"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <button class="btn-primary" bindtap="goRecommend">{{i18n.recommend}}</button>
+    <view class="center-link-wrap">
+      <text class="link" bindtap="goQuickRecommend">{{i18n.quickRecommend}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.reviewCardTitle}}</text>
+    <text class="subtitle">{{i18n.reviewCardSub}}</text>
+    <button class="btn-primary" bindtap="toReviewTab">{{i18n.goReview}}</button>
+  </view>
+
+  <view class="card">
+    <view class="row-between">
+      <text class="title">{{i18n.hotTitle}}</text>
+      <text class="link" bindtap="toRankTab">{{i18n.viewAll}}</text>
+    </view>
+
+    <view class="segment hot-segment">
+      <view
+        wx:for="{{sceneOptions}}"
+        wx:key="value"
+        class="segment__item {{hotScene===item.value ? 'segment__item--active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="switchHotScene"
+      >
+        {{item.label}}
+      </view>
+    </view>
+
+    <view wx:if="{{loadingHot}}" class="empty">{{i18n.loading}}</view>
+    <view wx:elif="{{!hotList.length}}" class="empty">{{i18n.empty}}</view>
+
+    <view wx:for="{{hotList}}" wx:key="id" class="list-row row" data-id="{{item.id}}" bindtap="toDetail">
+      <text class="list-rank">{{index + 1}}</text>
+      <view class="list-main">
+        <text class="list-title">{{item.name}}</text>
+        <text class="list-subtitle">{{item.brand}} | {{item.price_min}}-{{item.price_max}}</text>
+      </view>
+      <text class="score">{{item.final_score}}</text>
+    </view>
+  </view>
+</view>

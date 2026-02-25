@@ -1,0 +1,62 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">{{i18n.title}}</text>
+    <view class="search-row row">
+      <input
+        class="search-input"
+        placeholder="{{i18n.searchPlaceholder}}"
+        value="{{keyword}}"
+        bindinput="onKeywordInput"
+        confirm-type="search"
+        bindconfirm="onSearchConfirm"
+      />
+      <button class="search-btn" size="mini" bindtap="searchLiquors">{{i18n.search}}</button>
+    </view>
+
+    <view wx:if="{{searching}}" class="empty">{{i18n.searching}}</view>
+
+    <view wx:for="{{searchList}}" wx:key="id" class="list-row row">
+      <view class="list-main" data-id="{{item.id}}" bindtap="toDetail">
+        <text class="list-title">{{item.name}}</text>
+        <text class="list-subtitle">{{item.brand}} | {{item.price_min}}-{{item.price_max}}</text>
+      </view>
+      <text class="link" data-item="{{item}}" bindtap="selectFromSearch">{{i18n.choose}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{recentList.length}}">
+    <text class="title">{{i18n.recentTitle}}</text>
+    <view wx:for="{{recentList}}" wx:key="id" class="list-row row">
+      <view class="list-main" data-id="{{item.id}}" bindtap="toDetail">
+        <text class="list-title">{{item.name}}</text>
+        <text class="list-subtitle">{{item.brand}} | {{item.price_min}}-{{item.price_max}}</text>
+      </view>
+      <text class="link" data-item="{{item}}" bindtap="selectFromRecent">{{i18n.choose}}</text>
+    </view>
+  </view>
+
+  <view class="card action-card">
+    <text class="title">{{i18n.readyTitle}}</text>
+
+    <view wx:if="{{selectedLiquor}}" class="selected-box">
+      <text class="list-title">{{selectedLiquor.name}}</text>
+      <text class="list-subtitle">{{selectedLiquor.brand}} | {{selectedLiquor.price_min}}-{{selectedLiquor.price_max}}</text>
+    </view>
+    <view wx:else class="empty selected-empty">{{i18n.selectedEmpty}}</view>
+
+    <text class="subtitle scene-label">{{i18n.scene}}</text>
+    <view class="chips">
+      <view
+        wx:for="{{sceneOptions}}"
+        wx:key="value"
+        class="chip {{scene===item.value ? 'chip--active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="selectScene"
+      >
+        {{item.label}}
+      </view>
+    </view>
+
+    <button class="btn-primary" bindtap="startReview">{{i18n.start}}</button>
+  </view>
+</view>

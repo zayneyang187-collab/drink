@@ -1,0 +1,65 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">{{i18n.title}}</text>
+    <text class="subtitle">{{i18n.userId}}: {{userId}}</text>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.tasteTitle}}</text>
+    <view class="profile-row">
+      <text>{{i18n.prefSmooth}}</text>
+      <switch data-key="pref_smooth" checked="{{tasteProfile.pref_smooth}}" bindchange="onProfileSwitch" />
+    </view>
+    <view class="profile-row">
+      <text>{{i18n.prefSoft}}</text>
+      <switch data-key="pref_soft" checked="{{tasteProfile.pref_soft}}" bindchange="onProfileSwitch" />
+    </view>
+    <view class="profile-row">
+      <text>{{i18n.prefAroma}}</text>
+      <switch data-key="pref_aroma" checked="{{tasteProfile.pref_aroma}}" bindchange="onProfileSwitch" />
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.badgeTitle}}</text>
+    <view wx:for="{{badges}}" wx:key="key" class="badge-item {{item.earned ? 'earned' : ''}}">
+      <text class="list-title">{{item.title}}</text>
+      <text class="list-subtitle">{{item.condition}} | {{item.earned ? i18n.earned : i18n.notEarned}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.myRatings}}</text>
+    <view wx:if="{{!ratings.length}}" class="empty">{{i18n.noRatings}}</view>
+    <view wx:for="{{ratings}}" wx:key="id" class="list-row row">
+      <view class="list-main" data-id="{{item.liquor_id}}" bindtap="toDetail">
+        <text class="list-title">{{item.liquor_name}} ({{item.score_overall}}{{i18n.scoreUnit}})</text>
+        <text class="list-subtitle">{{item.scene_label}} | {{item.created_at_text}}</text>
+      </view>
+      <text class="link" data-id="{{item.liquor_id}}" bindtap="toRate">{{i18n.rerate}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.favorites}}</text>
+    <view wx:if="{{!favorites.length}}" class="empty">{{i18n.noFavorites}}</view>
+    <view wx:for="{{favorites}}" wx:key="liquor_id" class="list-row row">
+      <view class="list-main" data-id="{{item.liquor_id}}" bindtap="toDetail">
+        <text class="list-title">{{item.name}}</text>
+        <text class="list-subtitle">{{item.brand}} | {{item.price_min}}-{{item.price_max}}</text>
+      </view>
+      <text class="link" data-id="{{item.liquor_id}}" bindtap="removeFavorite">{{i18n.cancelFav}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="title">{{i18n.history}}</text>
+    <view wx:if="{{!history.length}}" class="empty">{{i18n.noHistory}}</view>
+    <view wx:for="{{history}}" wx:key="id" class="list-row row" data-id="{{item.id}}" bindtap="toDetail">
+      <view class="list-main">
+        <text class="list-title">{{item.name}}</text>
+        <text class="list-subtitle">{{item.brand}} | {{item.viewed_at_text}}</text>
+      </view>
+    </view>
+  </view>
+</view>
