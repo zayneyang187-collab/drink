@@ -22,6 +22,37 @@
       </view>
       <text class="link" data-item="{{item}}" bindtap="selectFromSearch">{{i18n.choose}}</text>
     </view>
+
+    <view wx:if="{{!searching && hasSearched && keyword && !searchList.length}}" class="create-box">
+      <text class="subtitle">{{i18n.noResult}}</text>
+      <text class="subtitle create-hint">{{i18n.createHint}}</text>
+
+      <input
+        class="search-input create-input"
+        placeholder="{{i18n.brandPlaceholder}}"
+        value="{{createBrand}}"
+        bindinput="onBrandInput"
+      />
+
+      <view class="row price-row">
+        <input
+          class="price-input"
+          type="number"
+          placeholder="{{i18n.priceMinPlaceholder}}"
+          value="{{createPriceMin}}"
+          bindinput="onPriceMinInput"
+        />
+        <input
+          class="price-input"
+          type="number"
+          placeholder="{{i18n.priceMaxPlaceholder}}"
+          value="{{createPriceMax}}"
+          bindinput="onPriceMaxInput"
+        />
+      </view>
+
+      <button class="btn-primary create-btn" loading="{{creating}}" bindtap="createAndSelectLiquor">{{i18n.createAndReview}}</button>
+    </view>
   </view>
 
   <view class="card" wx:if="{{recentList.length}}">

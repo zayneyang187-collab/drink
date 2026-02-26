@@ -1,51 +1,145 @@
-<view class="page safe-bottom">
-  <view wx:if="{{liquor}}" class="card">
-    <view class="row-between">
-      <view>
-        <text class="title">{{liquor.name}}</text>
-        <text class="subtitle">{{liquor.brand}} | {{liquor.price_min}}-{{liquor.price_max}}</text>
-      </view>
-      <text class="link" bindtap="toggleFavorite">{{is_favorite ? i18n.unfavorite : i18n.favorite}}</text>
-    </view>
-
-    <view class="chips">
-      <text class="chip chip--active">{{i18n.aroma}} {{liquor.aroma_std || i18n.unknownAroma}}</text>
-      <text class="chip" wx:if="{{liquor.aroma_raw_top_text}}">{{i18n.rawAroma}} {{liquor.aroma_raw_top_text}}</text>
-      <text class="chip">{{i18n.totalRatings}} {{stats.total_ratings || 0}}</text>
-    </view>
-
-    <button class="btn-primary" bindtap="goRate">{{i18n.goRate}}</button>
-    <view class="row-between action-links">
-      <text class="link" bindtap="copyRecommendation">{{i18n.copyText}}</text>
-      <button class="mini-share" open-type="share">{{i18n.share}}</button>
-    </view>
-  </view>
-
-  <view class="card">
-    <text class="title">{{i18n.sceneScores}}</text>
-    <view wx:if="{{!visibleSceneScores.length}}" class="empty">{{i18n.noSceneScore}}</view>
-    <view wx:for="{{visibleSceneScores}}" wx:key="scene" class="list-row row-between">
-      <text class="list-title">{{item.scene_label}} ({{item.v}})</text>
-      <text class="score">{{item.bayes_score_scene}}</text>
-    </view>
-  </view>
-
-  <view class="card">
-    <text class="title">{{i18n.dimensionAvg}}</text>
-    <view wx:for="{{dimensionCards}}" wx:key="scene" class="dim-row">
-      <text class="list-title">{{item.scene_label}}</text>
-      <view wx:for="{{item.rows}}" wx:key="key">
-        <text class="list-subtitle">{{item.label}}: {{item.value}}</text>
+<view class="page">
+  <block wx:if="{{loading}}">
+    <view class="card skeleton-card">
+      <view class="sk-line sk-line-lg"></view>
+      <view class="sk-line sk-line-md"></view>
+      <view class="sk-row">
+        <view class="sk-chip"></view>
+        <view class="sk-chip"></view>
+        <view class="sk-chip"></view>
       </view>
     </view>
-  </view>
 
-  <view class="card">
-    <text class="title">{{i18n.latestReviews}}</text>
-    <view wx:if="{{!latest_reviews.length}}" class="empty">{{i18n.noComment}}</view>
-    <view wx:for="{{latest_reviews}}" wx:key="created_at" class="list-row">
-      <text class="list-subtitle">{{item.scene_label}} | {{item.score_overall}} | {{item.created_at_text}}</text>
-      <text class="list-title">{{item.review_text || i18n.noShortReview}}</text>
+    <view class="card skeleton-card">
+      <view class="sk-line sk-line-md"></view>
+      <view class="sk-score"></view>
+      <view class="sk-line"></view>
+      <view class="sk-line"></view>
+    </view>
+
+    <view class="card skeleton-card">
+      <view class="sk-line sk-line-md"></view>
+      <view class="sk-bar"></view>
+      <view class="sk-bar"></view>
+      <view class="sk-bar"></view>
+      <view class="sk-bar"></view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="card hero-card">
+      <text class="hero-title">{{liquor.name || i18n.detailTitle}}</text>
+      <view class="sub-row">
+        <text class="sub">{{liquor.brand}} · {{liquor.priceRange}}</text>
+      </view>
+      <view class="tags-row">
+        <text wx:for="{{heroTags}}" wx:key="index" class="chip">{{item}}</text>
+      </view>
+      <view class="hero-action-row">
+        <button class="icon-btn icon-btn--small" hover-class="none" bindtap="toggleFavorite">{{isFavorite ? i18n.favIconOn : i18n.favIconOff}}</button>
+        <button class="icon-btn icon-btn--small" hover-class="none" open-type="share">{{i18n.shareIcon}}</button>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="title">{{i18n.scoreCardTitle}}</text>
+
+      <view class="seg">
+        <view
+          wx:for="{{sceneTabs}}"
+          wx:key="value"
+          class="seg-item {{selectedScene === item.value ? 'seg-item--active' : ''}}"
+          data-scene="{{item.value}}"
+          bindtap="switchScene"
+        >
+          {{item.label}}
+        </view>
+      </view>
+
+      <view class="score-main row">
+        <text class="score-value">{{selectedScore}}</text>
+        <text class="score-unit">{{i18n.scoreUnit}}</text>
+      </view>
+
+      <text class="score-emotional">{{emotionalText}}</text>
+      <text class="sub score-stability">{{stabilityText}}</text>
+
+      <text class="sub reason-title">{{i18n.reasonTitle}}</text>
+      <view class="reason-list">
+        <view wx:for="{{reasons}}" wx:key="index" class="reason-item row">
+          <text class="reason-dot"></text>
+          <text class="reason-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="title">{{i18n.actionTitle}}</text>
+      <button class="btn-primary" bindtap="goRate">{{i18n.goRate}}</button>
+      <view class="row action-row">
+        <button class="btn-ghost action-btn" bindtap="copyRecommendation">{{i18n.copyText}}</button>
+        <button class="btn-ghost action-btn" open-type="share">{{i18n.shareLiquor}}</button>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="title">{{i18n.portraitTitle}}</text>
+
+      <view wx:for="{{metricRows}}" wx:key="key" class="metric-item">
+        <view class="row metric-head">
+          <view class="row">
+            <text class="metric-icon">{{item.icon}}</text>
+            <text class="metric-label">{{item.label}}</text>
+          </view>
+          <text class="metric-value">{{item.valueText}}</text>
+        </view>
+        <view class="metric-track">
+          <view class="metric-fill" style="width: {{item.percent}}%;"></view>
+        </view>
+        <text wx:if="{{item.noData}}" class="sub metric-empty">{{i18n.noData}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="title">{{i18n.audienceTitle}}</text>
+      <view class="chip-wrap row">
+        <text wx:for="{{audienceTags}}" wx:key="index" class="chip">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="title">{{i18n.reviewsTitle}}</text>
+
+      <view wx:if="{{!reviews.length}}" class="sub">{{i18n.noData}}</view>
+
+      <view wx:for="{{reviews}}" wx:key="index" class="review-item">
+        <view class="row review-head">
+          <view class="row">
+            <text class="review-score">{{item.scoreText}}</text>
+            <text class="sub">{{item.sceneLabel}}</text>
+          </view>
+          <text class="sub">{{item.timeText}}</text>
+        </view>
+        <text class="review-text">{{item.reviewText}}</text>
+      </view>
+
+      <view class="row review-foot">
+        <text class="sub">{{i18n.reviewFootnote}}</text>
+        <text class="link" bindtap="onViewAllReviews">{{i18n.viewAll}}</text>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{!loading}}" class="cta-wrap">
+    <view class="cta row">
+      <view class="cta-left">
+        <text class="sub">{{i18n.ctaScore}}</text>
+        <view class="row cta-value-row">
+          <text class="cta-score">{{selectedScore}}</text>
+          <text class="cta-scene">{{selectedSceneLabel}}</text>
+        </view>
+      </view>
+      <button class="btn-primary cta-btn" bindtap="goRate">{{i18n.goRate}}</button>
     </view>
   </view>
 </view>

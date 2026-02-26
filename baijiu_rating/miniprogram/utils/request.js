@@ -1,87 +1,61 @@
-const DEFAULT_BASE_URL = 'http://127.0.0.1:3000/api';
-let baseUrl = DEFAULT_BASE_URL;
+const CLOUD_ENV_ID = 'prod-7gpq613l2903a674'; // 必须与 app.js 的 wx.cloud.init.env 一致
+const CLOUD_SERVICE = 'baijiu-api';
+const API_PREFIX = '/api';
 
-function setBaseUrl(url) {
-  if (url && typeof url === 'string') {
-    baseUrl = url.replace(/\/$/, '');
-  }
-}
-
-function getBaseUrl() {
-  return baseUrl;
+function normalizePath(url) {
+  if (!url) return API_PREFIX;
+  if (/^https?:\/\//.test(url)) return url;
+  const p = url.startsWith('/') ? url : `/${url}`;
+  return p.startsWith('/api') ? p : `${API_PREFIX}${p}`;
 }
 
 function request(options) {
   const opts = options || {};
   const method = (opts.method || 'GET').toUpperCase();
-  const url = buildUrl(opts.url || '');
+  const path = normalizePath(opts.url || '');
 
   return new Promise((resolve, reject) => {
-    wx.request({
-      url,
+    wx.cloud.callContainer({
+      config: { env: CLOUD_ENV_ID },
+      path,
       method,
-      data: opts.data || {},
-      timeout: Number(opts.timeout || 10000),
       header: Object.assign(
         {
-          'Content-Type': 'application/json'
+          'content-type': 'application/json',
+          'X-WX-SERVICE': CLOUD_SERVICE
         },
         opts.header || {}
       ),
+      data: opts.data || {},
+      timeout: Number(opts.timeout || 10000),
       success(res) {
-        const statusCode = Number(res.statusCode);
         const payload = res.data;
+        const statusCode = Number(res.statusCode || 200);
 
-        if (statusCode >= 200 && statusCode < 300) {
-          if (payload && payload.ok === false) {
-            const message = payload.error && payload.error.message ? payload.error.message : '\u8bf7\u6c42\u5931\u8d25';
-            toast(message);
-            reject(payload.error || new Error(message));
-            return;
-          }
-
-          resolve(payload);
+        if (statusCode < 200 || statusCode >= 300) {
+          const message = payload?.error?.message || '请求失败';
+          wx.showToast({ title: message, icon: 'none' });
+          reject(payload?.error || new Error(message));
           return;
         }
 
-        const message = payload && payload.error && payload.error.message ? payload.error.message : '\u7f51\u7edc\u8bf7\u6c42\u5931\u8d25';
-        toast(message);
-        reject(payload && payload.error ? payload.error : new Error(message));
+        if (payload && payload.ok === false) {
+          const message = payload.error?.message || '请求失败';
+          wx.showToast({ title: message, icon: 'none' });
+          reject(payload.error || new Error(message));
+          return;
+        }
+
+        resolve(payload);
       },
-      fail(error) {
-        toast('\u65e0\u6cd5\u8fde\u63a5\u670d\u52a1\u5668\uff0c\u8bf7\u68c0\u67e5 baseUrl');
-        reject(error);
+      fail(err) {
+        wx.showToast({ title: '云托管调用失败', icon: 'none' });
+        reject(err);
       }
     });
   });
 }
 
-function buildUrl(url) {
-  if (!url) {
-    return baseUrl;
-  }
-
-  if (/^https?:\/\//.test(url)) {
-    return url;
-  }
-
-  if (url.startsWith('/')) {
-    return `${baseUrl}${url}`;
-  }
-
-  return `${baseUrl}/${url}`;
-}
-
-function toast(title) {
-  wx.showToast({
-    title,
-    icon: 'none',
-    duration: 1800
-  });
-}
-
 module.exports = {
-  request,
-  setBaseUrl,
-  getBaseUrl
+  request
 };

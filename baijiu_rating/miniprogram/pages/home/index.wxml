@@ -1,10 +1,10 @@
 <view class="page safe-bottom">
-  <view class="ios-nav row-between">
+  <view class="ios-nav row-between" style="padding-top: {{navPaddingTop}}px; min-height: {{navMinHeight}}px;">
     <text class="ios-title">{{i18n.navTitle}}</text>
     <text class="link" bindtap="goSearch">{{i18n.navSearch}}</text>
   </view>
 
-  <view class="card">
+  <view class="card quick-card">
     <text class="title">{{i18n.quickTitle}}</text>
 
     <view class="field">
@@ -64,7 +64,7 @@
           <view
             wx:for="{{prefOptions}}"
             wx:key="value"
-            class="chip {{prefs.indexOf(item.value)>=0 ? 'chip--active' : ''}}"
+            class="chip {{item.active ? 'chip--active' : ''}}"
             data-value="{{item.value}}"
             bindtap="togglePref"
           >
@@ -82,7 +82,7 @@
 
   <view class="card">
     <text class="title">{{i18n.reviewCardTitle}}</text>
-    <text class="subtitle">{{i18n.reviewCardSub}}</text>
+    <text class="subtitle review-subtitle">{{i18n.reviewCardSub}}</text>
     <button class="btn-primary" bindtap="toReviewTab">{{i18n.goReview}}</button>
   </view>
 

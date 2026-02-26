@@ -30,14 +30,18 @@ page {
 }
 
 .title {
+  display: block;
   font-size: 34rpx;
   font-weight: 700;
+  line-height: 1.35;
   color: var(--text-primary);
 }
 
 .subtitle {
+  display: block;
   margin-top: 6rpx;
   font-size: 24rpx;
+  line-height: 1.5;
   color: var(--text-secondary);
 }
 
@@ -102,15 +106,23 @@ page {
 }
 
 .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   margin-top: 10rpx;
   height: 88rpx;
-  line-height: 88rpx;
+  line-height: 1;
+  padding: 0;
   border-radius: 12rpx;
   border: none;
-  background: var(--accent);
+  background: linear-gradient(180deg, #FFB340 0%, var(--accent) 100%);
+  box-shadow: 0 8rpx 16rpx rgba(255, 159, 10, 0.26);
   color: #FFFFFF;
   font-size: 30rpx;
   font-weight: 600;
+  letter-spacing: 1rpx;
+  text-align: center;
 }
 
 .btn-primary::after {

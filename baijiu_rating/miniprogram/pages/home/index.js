@@ -30,12 +30,21 @@ const PREF_OPTIONS = [
   { label: '\u6027\u4ef7\u6bd4', value: 'value' }
 ];
 
+function buildPrefOptions(selected) {
+  const set = new Set(Array.isArray(selected) ? selected : []);
+  return PREF_OPTIONS.map((item) =>
+    Object.assign({}, item, {
+      active: set.has(item.value)
+    })
+  );
+}
+
 Page({
   data: {
     sceneOptions: SCENE_OPTIONS,
     priceOptions: PRICE_OPTIONS,
     crowdOptions: CROWD_OPTIONS,
-    prefOptions: PREF_OPTIONS,
+    prefOptions: buildPrefOptions([]),
     i18n: {
       navTitle: '\u559d\u70b9\u5565\u5462',
       navSearch: '\u641c\u7d22',
@@ -62,13 +71,44 @@ Page({
     crowd: '',
     prefs: [],
     showMore: false,
+    navPaddingTop: 8,
+    navMinHeight: 88,
     hotScene: 'party',
     hotList: [],
     loadingHot: false
   },
 
+  onLoad() {
+    this.initNavMetrics();
+  },
+
   onShow() {
     this.fetchHotPreview();
+  },
+
+  initNavMetrics() {
+    let statusBarHeight = 20;
+    let navHeight = 44;
+
+    try {
+      const sys = wx.getSystemInfoSync ? wx.getSystemInfoSync() : {};
+      statusBarHeight = Number(sys.statusBarHeight) || 20;
+
+      if (wx.getMenuButtonBoundingClientRect) {
+        const menu = wx.getMenuButtonBoundingClientRect();
+        if (menu && menu.top && menu.height) {
+          const gap = Math.max(4, menu.top - statusBarHeight);
+          navHeight = menu.height + gap * 2;
+        }
+      }
+    } catch (error) {
+      // fallback to default values when device metrics are unavailable
+    }
+
+    this.setData({
+      navPaddingTop: statusBarHeight + 4,
+      navMinHeight: navHeight + statusBarHeight + 4
+    });
   },
 
   selectScene(e) {
@@ -90,7 +130,10 @@ Page({
 
     if (idx >= 0) {
       current.splice(idx, 1);
-      this.setData({ prefs: current });
+      this.setData({
+        prefs: current,
+        prefOptions: buildPrefOptions(current)
+      });
       return;
     }
 
@@ -100,7 +143,10 @@ Page({
     }
 
     current.push(value);
-    this.setData({ prefs: current });
+    this.setData({
+      prefs: current,
+      prefOptions: buildPrefOptions(current)
+    });
   },
 
   toggleMore() {

@@ -1,16 +1,32 @@
+.page {
+  padding-top: 0;
+}
+
 .ios-nav {
   margin-bottom: 20rpx;
-  padding-top: calc(env(safe-area-inset-top) + 10rpx);
+  box-sizing: border-box;
+  padding-bottom: 8rpx;
 }
 
 .ios-title {
-  font-size: 56rpx;
+  font-size: 46rpx;
   font-weight: 700;
   color: #1C1C1E;
+  line-height: 1.24;
+  max-width: 74%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quick-card {
+  max-height: 66vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .field {
-  margin-top: 16rpx;
+  margin-top: 12rpx;
 }
 
 .field-label {
@@ -19,14 +35,37 @@
 }
 
 .more-toggle {
-  margin-top: 10rpx;
+  margin-top: 8rpx;
 }
 
 .center-link-wrap {
-  margin-top: 14rpx;
+  margin-top: 10rpx;
   text-align: center;
+}
+
+.review-subtitle {
+  margin-top: 10rpx;
+  margin-bottom: 16rpx;
 }
 
 .hot-segment {
   margin-top: 14rpx;
+}
+
+.quick-card .chips {
+  margin-top: 8rpx;
+}
+
+.quick-card .chip {
+  margin-right: 8rpx;
+  margin-bottom: 8rpx;
+  padding: 8rpx 16rpx;
+  font-size: 22rpx;
+}
+
+.quick-card .btn-primary {
+  margin-top: 8rpx;
+  height: 80rpx;
+  font-size: 28rpx;
+  letter-spacing: 0;
 }
